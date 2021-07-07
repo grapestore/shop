@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <title>로그인페이지</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap" rel="stylesheet">
+
+    <script>
+        $(document).ready(function () {
+
+        });
+
+        function log_in() {
+
+            let id = $('#id_give').val();
+            let pw = $('#pw_give').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                data: {id_give:id,pw_give:pw},
+                success: function (response) { // 성공하면
+                    alert(response['msg'])
+                }
+            })
+        }
+
+    </script>
+
+    <style>
+        * {
+            font-family: 'Hi Melody', cursive;
+        }
+
+        .wrap {
+            width: 300px;
+            margin: auto;
+        }
+
+        .mytitle {
+            background-color: green;
+
+            width: 300px;
+            height: 200px;
+
+            color: white;
+            text-align: center;
+
+            background-image: url("https://www.ancient-origins.net/sites/default/files/field/image/Agesilaus-II-cover.jpg");
+            background-size: cover;
+            background-position: center;
+
+            border-radius: 10px;
+
+            padding-top: 20px;
+        }
+
+        .mybtn {
+            width: 100px;
+            margin: auto;
+            display: block;
+        }
+
+        .redfont {
+            color: red;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <form action="" method="post">
+        <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="id_give" id="id_give" placeholder="Email">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="pw_give" id="pw_give" placeholder="Password">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" onclick="log_in()" class="btn btn-primary">Log in</button>
+            </div>
+        </div>
+    </form>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="button" onclick="location.href='sign'" class="btn btn-primary">Sign in</button>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
