@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap" rel="stylesheet">
+    <title>grapeshop</title>
+
+    <script>
+        $(document).ready(function () {
+            $('#item-box').empty();
+            ShowItem();
+        });
+
+        function ShowItem() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/mall/list',
+                data: {},
+                success: function (response) {
+
+                    let lens = response['item'].length;
+                    for (let i = 0; i < lens; i++) {
+                        let url = response['item'][i]['url'];
+                        let image = response['item'][i]['image'];
+                        let brand = response['item'][i]['brand'];
+                        let category = response['item'][i]['category'];
+                        let price = response['item'][i]['price'];
+
+                        let temp_html = `<div id="card-box" class="card child" style="width: 18rem;">
+                                            <img class="card-img-top" src=${image}
+                                                 alt="Card image cap">
+                                            <div class="card-body">
+                                                <h5 class="card-title">브랜드 : ${brand}</h5>
+                                                <p class="card-text">카테고리 : ${category}</p>
+                                                <p class="card-text">가격 : ${price}</p>
+                                                <a href=${url} class="btn btn-primary">구매하러가기</a>
+                                                <button type="button" onclick="DeleteItem('${url}')" class="btn btn-primary">삭제</button>
+                                            </div>
+                                        </div>`;
+                        $('#item-box').append(temp_html);
+                    }
+
+
+                }
+
+            });
+
+
+        }
+        function DeleteItem(url){
+
+            $.ajax({
+                type: 'POST',
+                url: '/mall/delete',
+                data: {delete_give:url},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload();
+                }
+
+            });
+
+        }
+    </script>
+
+    <style>
+        * {
+            font-family: 'Hi Melody', cursive;
+        }
+
+        .title {
+            margin: 10px;
+        }
+
+        .wrap {
+            width: 900px;
+            margin: 30px;
+        }
+
+        .parant {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .child {
+            float: 1;
+        }
+        .rightcomponent{
+            margin: 0 0 0 200px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="card bg-dark text-white">
+    <img class="card-img" src="https://i.pinimg.com/originals/07/35/e0/0735e0040ac2fa6569feffba14592892.png"
+         alt="Card image">
+</div>
+<div class="card-img-overlay, title">
+    <h1 class="card-title">Grape SHOP</h1>
+    <p class="card-text">Good mall is good think.</p>
+    <p class="card-text">Last updated 1 mins ago</p>
+    <button type="button" onclick="window.open('/add')" class="btn btn-primary btn-sm">등록하기</button>
+    <button type="submit" onclick="location.href='/logout'" class="btn btn-primary btn-sm">Log out</button>
+
+</div>
+<div class="wrap parant rightcomponent" id="item-box">
+    <div id="card-box" class="card child" style="width: 18rem;">
+        <img class="card-img-top" src="https://image.msscdn.net/images/goods_img/20210316/1848166/1848166_4_500.jpg"
+             alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">브랜드 : ???</h5>
+            <p class="card-text">카테고리 : ???</p>
+            <p class="card-text">가격 : ???</p>
+            <a href="https://store.musinsa.com/app/goods/1848166" class="btn btn-primary">구매하러가기</a>
+            <button type="button" onclick="DeleteItem()" class="btn btn-primary">삭제</button>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

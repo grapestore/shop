@@ -1,0 +1,143 @@
+<!Doctype html>
+<html lang="ko">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+
+    <title>게시글 등록</title>
+
+    <!-- style -->
+    <style type="text/css">
+        * {
+            font-family: "Stylish", sans-serif;
+        }
+
+        .wrap {
+            width: 900px;
+            margin: auto;
+        }
+
+        .comment {
+            color: blue;
+            font-weight: bold;
+        }
+
+        #post-box {
+            width: 500px;
+            margin: 20px auto;
+            padding: 50px;
+            border: black solid;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+        });
+
+        function postitem() {
+            let url = $('#post-url').val();
+            let image_url = $('#image-url').val();
+            let brand = $('#brand').val();
+            let category = $('#category').val();
+            let price = $('#price').val();
+            $.ajax({
+                type: "POST",
+                url: "/add",
+                data: {
+                    url_give:url,
+                    img_give:image_url,
+                    brand_give:brand,
+                    category_give:category,
+                    price_give:price
+                },
+                success: function (response) { // 성공하면
+                    console.log(price)
+                    alert(response['msg'])
+                    window.close()
+                }
+            })
+        }
+
+        function showArticles() {
+            $.ajax({
+                type: "GET",
+                url: "/add",
+                data: {},
+                success: function (response) {
+                    for (let i = 0, lens = response['all_article'].length; i < lens; i++) {
+                        let title = response['all_article'][i]['title']
+                        let image = response['all_article'][i]['image']
+                        let url = response['all_article'][i]['url']
+                        let desc = response['all_article'][i]['desc']
+                        let comment = response['all_article'][i]['comment']
+
+                        let temp_html = `<div class="card">
+                                            <img class="card-img-top" src=${image}>
+                                            <div class="card-body">
+                                                <a target="_blank" href=${url} class="card-title">${title}</a>
+                                                <p class="card-text">${desc}</p>
+                                                <p class="card-text comment">${comment}</p>
+                                            </div>
+                                        </div>`;
+                        $('#cards-box').append(temp_html);
+                    }
+                }
+            })
+        }
+    </script>
+
+</head>
+
+<body>
+<div class="wrap">
+    <div class="jumbotron">
+        <h1 class="display-4">등록하세요</h1>
+        <p class="lead">물건을 등록할 수 있는 공간입니다</p>
+        <hr class="my-4">
+    </div>
+    <div id="post-box" class="form-post">
+        <div>
+            <div class="form-group">
+                <label for="post-url">아티클 URL</label>
+                <input id="post-url" class="form-control" placeholder="링크 url">
+            </div>
+            <div class="form-group">
+                <label for="post-url">이미지 URL</label>
+                <input id="image-url" class="form-control" placeholder="이미지 url">
+            </div>
+            <div class="form-group">
+                <label>브랜드</label>
+                <textarea id="brand" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label>카테고리</label>
+                <textarea id="category" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label>가격</label>
+                <textarea id="price" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" onclick="postitem()">ITEM 저장</button>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
